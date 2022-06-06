@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>chicken</title>
+    <link rel="stylesheet" href="../static/dish.css">
+    <script defer src="../static/js/dish.js"></script>
+</head>
+<body>
+<nav class="navbar">
+    <div class="nav">
+        <div class="nav-items">
+            <form class="search" id="searchBar">
+                <input type="text" id="search" name="search" class="search-box" placeholder="search product">
+                <input class="search-btn" id="searchButton" type="submit" value="search">
+            </form>
+        </div>
+    </div>
+    <ul class="links-container">
+        <li class="link-item"><a href="#" class="link">Home</a></li>
+        <li class="link-item"><a href="index.html" class="link">Logout</a></li>
+    </ul>
+</nav>
+
+
+<!-- product  -->
+<section class="product">
+    <h2 class="product-category">Pizza</h2>
+</section>
+    <!-- product 2-->
+
+        <div class="container">
+            <div class="card">
+                <div class="face face1">
+                    <div class="content">
+                        <h3>Code</h3>
+                        <h3>Code</h3>
+                        <h3>Code</h3>
+                    </div>
+                </div>
+                <div class="face face2">
+                    <div class="content">
+                        <p>Lorem ipsum dolor sit amet cum cumque minus iste veritatis provident at.Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cum cumque minus iste veritat</p>
+                        <a href="#" id="1dd" onclick="deleteDish(this)">Delete</a>
+                        <a href="#" id="1d" onclick="updateForm(this)" type="submit">Modify</a>
+                        <a href="#">View ingredient list</a>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+
+<!-- add-->
+<button class="open-button" onclick="openForm()">Add Food</button>
+
+<form class="form form-popup" id="myfForm">
+    <div class="subtitle">pei liao</div>
+    <div class="input-container ic1">
+        <input id="name" name="name" class="input" type="text" placeholder=" " />
+        <div class="cut"></div>
+        <label for="name" class="placeholder">Name</label>
+    </div>
+    <div class="input-container ic2">
+        <input id="category" name="category" class="input" type="text" placeholder=" " />
+        <div class="cut"></div>
+        <label for="category" class="placeholder">cate</label>
+    </div>
+    <div class="input-container ic2">
+        <input id="time" class="input" name="time" type="number" placeholder=" " />
+        <div class="cut"></div>
+        <label for="time" class="placeholder">time</label>
+    </div>
+    <div class="input-container ic2">
+        <input id="description" name="description" class="input" type="text" placeholder=" " />
+        <div class="cut cut-short"></div>
+        <label for="description" class="placeholder">des</label>
+    </div>
+    <button type="submit" id="submit" class="submit">add</button>
+    <button type="button" class="submit-close" onclick="closeForm()">Close</button>
+</form>
+
+
+
+</body>
+</html>
