@@ -1,7 +1,9 @@
 let update = false;
 let name ="";
 const cardDisplay = document.getElementById("container")
-
+/**
+ * submit form for PUT & POST
+ */
 document.getElementById("myfForm").addEventListener("submit",async function(event){
     event.preventDefault();
     let dish={};
@@ -15,8 +17,6 @@ document.getElementById("myfForm").addEventListener("submit",async function(even
         await  addFood(dish);
     }
 
-
-
     for(const elem of document.querySelectorAll("input[type=text],input[type=text],input[type=number],input[type=text]")){
         elem.value="";
     }
@@ -26,7 +26,9 @@ document.getElementById("myfForm").addEventListener("submit",async function(even
 })
 
 
-
+/**
+ * FetchAPI - GET(Dishes)
+ */
 async function getDish(){
     try{
         const response = await fetch('http://localhost:8080/dishes');
@@ -41,6 +43,9 @@ async function getDish(){
 
 getDish();
 
+/**
+ * FetchAPI - POST
+ */
 async function addFood(dish){
     try{
         const response = await fetch('http://localhost:8080/dishes',{
@@ -60,7 +65,9 @@ async function addFood(dish){
     }
 
 }
-
+/**
+ * FetchAPI - PUT
+ */
 async function updateFood(dish,name){
     try{
         const response = await fetch('http://localhost:8080/dishes/'+name,{
@@ -80,6 +87,9 @@ async function updateFood(dish,name){
     }
 }
 
+/**
+ * FetchAPI - DELETE
+ */
 async function deleteFood(id){
     try{
         const response = await fetch('http://localhost:8080/dishes/'+id,{
@@ -129,6 +139,10 @@ function closeCancel() {
     document.getElementById("cancelSearch").style.display = "none";
     location.reload();
 }
+
+/**
+ * submit text for search.
+ */
 document.getElementById("searchBar").addEventListener("submit",async function(event){
     event.preventDefault();
     let search={};
@@ -155,7 +169,9 @@ document.getElementById("searchBar").addEventListener("submit",async function(ev
     }
 })
 
-
+/**
+ * FetchAPI - Get (search).
+ */
 async function searchFunction(searchBody){
     try{
         const response = await fetch('http://localhost:8080/dishes/search?'+searchBody,{
@@ -175,7 +191,9 @@ async function searchFunction(searchBody){
     }
 
 }
-
+/**
+ * create html card
+ */
 function generateDishHTML(responseJson){
     for(const item of responseJson){
         //create elements

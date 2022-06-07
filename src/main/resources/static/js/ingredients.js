@@ -192,7 +192,7 @@ async function searchFunction(searchBody){
 }
 
 /**
- * create card
+ * create html card
  */
 function generateIngredientHTML(responseJson){
     for(const item of responseJson){
