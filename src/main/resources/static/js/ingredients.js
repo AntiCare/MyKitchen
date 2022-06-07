@@ -1,5 +1,6 @@
 let update = false;
 let name ="";
+const cardDisplay = document.getElementById("product-container")
 /**
  * submit form for PUT & POST
  */
@@ -35,55 +36,16 @@ async function deleteIngredient(event){
 /**
  * FetchAPI - GET(ingredients)
  */
-const cardDisplay = document.getElementById("product-container")
+
 async function getIngredients(){
     try{
         const response = await fetch('http://localhost:8080/ingredients');
-        console.log("Get Dishes: "+response);
+        console.log("Get Ingredients: "+response);
         const responseJson = await response.json();
-        console.log("Get Dishes Json: "+responseJson)
-        for(const item of responseJson){
-            //create elements
-
-            const weight = document.createElement("span");
-            const name = document.createElement("h4");
-            const description = document.createElement("p");
-            const updateButton = document.createElement("button");
-            const deleteButton = document.createElement("button");
-            const cardBody = document.createElement("div");
-            const card = document.createElement("div");
-            const br = document.createElement("br")
-            const br2 = document.createElement("br")
-
-
-            //set class/id/onclick
-            card.className="card";
-            cardBody.className="card-body";
-            weight.className = "tag tag-pink";
-            description.className="card-des";
-            updateButton.className="button button2";
-            updateButton.type ="submit";
-            updateButton.id = item.id+"a";
-            updateButton.addEventListener("click",function (){updateForm(this)});
-            deleteButton.className="button button3";
-            deleteButton.id = item.id+"aa";
-            deleteButton.addEventListener("click",function (){deleteIngredient(this)});
-
-            //set innerHTML
-            weight.innerHTML=item.weight+"g";
-            name.innerHTML="Name: "+item.name;
-            description.innerHTML="Description: "+item.description;
-            updateButton.innerHTML="Modify";
-            deleteButton.innerHTML="Delete";
-
-
-            //build up
-            cardBody.append(weight,br2,name,br,description,updateButton,deleteButton);
-            card.append(cardBody);
-            cardDisplay.append(card);
-        }
+        console.log("Get Ingredients Json: "+responseJson)
+        generateIngredientHTML(responseJson)
     }catch (e) {
-        alert("Ooops!"+e)
+        alert("Ingredient get error!: "+e)
     }
 }
 
@@ -162,6 +124,15 @@ function openForm() {
 function closeForm() {
     document.getElementById("myiForm").style.display = "none";
 }
+
+function openCancel() {
+    document.getElementById("cancelSearch").style.display = "block";
+}
+
+function closeCancel() {
+    document.getElementById("cancelSearch").style.display = "none";
+    location.reload();
+}
 function updateForm(event){
     document.getElementById("myiForm").style.display = "block";
     console.log(event.id)
@@ -192,7 +163,7 @@ document.getElementById("searchBar").addEventListener("submit",async function(ev
     console.log(searchBody);
 
     await searchFunction(searchBody);
-
+    openCancel();
     for(const elem of document.querySelectorAll("input[type=text]")){
         elem.value="";
     }
@@ -210,11 +181,57 @@ async function searchFunction(searchBody){
             }
         }).then(res=>res.json())
             .then(data=>{
-                console.log(data)
+                document.getElementById("product-container").innerHTML=" "
+                generateIngredientHTML(data)
             })
     }catch (e){
         console.error(e);
         alert("Something went wrong!")
     }
 
+}
+
+/**
+ * create card
+ */
+function generateIngredientHTML(responseJson){
+    for(const item of responseJson){
+        //create elements
+        const weight = document.createElement("span");
+        const name = document.createElement("h4");
+        const description = document.createElement("p");
+        const updateButton = document.createElement("button");
+        const deleteButton = document.createElement("button");
+        const cardBody = document.createElement("div");
+        const card = document.createElement("div");
+        const br = document.createElement("br")
+        const br2 = document.createElement("br")
+
+
+        //set class/id/onclick
+        card.className="card";
+        cardBody.className="card-body";
+        weight.className = "tag tag-pink";
+        description.className="card-des";
+        updateButton.className="button button2";
+        updateButton.type ="submit";
+        updateButton.id = item.id+"a";
+        updateButton.addEventListener("click",function (){updateForm(this)});
+        deleteButton.className="button button3";
+        deleteButton.id = item.id+"aa";
+        deleteButton.addEventListener("click",function (){deleteIngredient(this)});
+
+        //set innerHTML
+        weight.innerHTML=item.weight+"g";
+        name.innerHTML="Name: "+item.name;
+        description.innerHTML="Description: "+item.description;
+        updateButton.innerHTML="Modify";
+        deleteButton.innerHTML="Delete";
+
+
+        //build up
+        cardBody.append(weight,br2,name,br,description,updateButton,deleteButton);
+        card.append(cardBody);
+        cardDisplay.append(card);
+    }
 }

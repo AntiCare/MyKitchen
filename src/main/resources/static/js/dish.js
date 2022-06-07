@@ -1,5 +1,6 @@
 let update = false;
 let name ="";
+const cardDisplay = document.getElementById("container")
 
 document.getElementById("myfForm").addEventListener("submit",async function(event){
     event.preventDefault();
@@ -25,60 +26,16 @@ document.getElementById("myfForm").addEventListener("submit",async function(even
 })
 
 
-const cardDisplay = document.getElementById("container")
+
 async function getDish(){
     try{
         const response = await fetch('http://localhost:8080/dishes');
         console.log("Get Dishes: "+response);
         const responseJson = await response.json();
         console.log("Get Dishes Json: "+responseJson)
-        for(const item of responseJson){
-            //create elements
-            const card =document.createElement("div")
-            const name =document.createElement("h3")
-            const category =document.createElement("h3")
-            const time =document.createElement("h3")
-            const content1 = document.createElement("div")
-            const face1 = document.createElement("div")
-
-            const description =document.createElement("p")
-            const deleteButton =document.createElement("a")
-            const updateButton =document.createElement("a")
-            const ingredientButton =document.createElement("a")
-            const content2 = document.createElement("div")
-            const face2 = document.createElement("div")
-
-            //set class/id/onclick
-            deleteButton.id= item.id+"dd"
-            deleteButton.addEventListener("click",function (){deleteDish(this)})
-            updateButton.id = item.id+"d"
-            updateButton.addEventListener("click",function (){updateForm(this)})
-            updateButton.type="submit"
-            content2.className="content"
-            content1.className="content"
-            face2.className="face face2"
-            face1.className="face face1"
-            card.className="card"
-
-            //set innerHTML
-            name.innerHTML ="Name: "+item.name
-            category.innerHTML="Category: "+item.category
-            time.innerHTML="Time: "+item.time
-            description.innerHTML="Description: "+item.description
-            updateButton.innerHTML="Modify"
-            deleteButton.innerHTML="Delete"
-            ingredientButton.innerHTML = "View ingredient list"
-
-            //build up
-            content1.append(name,category,time);
-            face1.append(content1);
-            content2.append(description,deleteButton,updateButton,ingredientButton)
-            face2.append(content2)
-            card.append(face1,face2)
-            cardDisplay.append(card)
-        }
+        generateDishHTML(responseJson)
     }catch (e) {
-        alert("Ooops!"+e)
+        alert("Dish get error!: "+e)
     }
 }
 
@@ -164,6 +121,14 @@ function closeForm() {
     document.getElementById("myfForm").style.display = "none";
 }
 
+function openCancel() {
+    document.getElementById("cancelSearch").style.display = "block";
+}
+
+function closeCancel() {
+    document.getElementById("cancelSearch").style.display = "none";
+    location.reload();
+}
 document.getElementById("searchBar").addEventListener("submit",async function(event){
     event.preventDefault();
     let search={};
@@ -184,6 +149,7 @@ document.getElementById("searchBar").addEventListener("submit",async function(ev
 
     await searchFunction(searchBody);
 
+    openCancel();
     for(const elem of document.querySelectorAll("input[type=text]")){
         elem.value="";
     }
@@ -200,10 +166,61 @@ async function searchFunction(searchBody){
         }).then(res=>res.json())
             .then(data=>{
                 console.log(data)
+                document.getElementById("container").innerHTML=" "
+               generateDishHTML(data)
             })
     }catch (e){
         console.error(e);
         alert("Something went wrong!")
+    }
+
+}
+
+function generateDishHTML(responseJson){
+    for(const item of responseJson){
+        //create elements
+        const card =document.createElement("div")
+        const name =document.createElement("h3")
+        const category =document.createElement("h3")
+        const time =document.createElement("h3")
+        const content1 = document.createElement("div")
+        const face1 = document.createElement("div")
+
+        const description =document.createElement("p")
+        const deleteButton =document.createElement("a")
+        const updateButton =document.createElement("a")
+        const ingredientButton =document.createElement("a")
+        const content2 = document.createElement("div")
+        const face2 = document.createElement("div")
+
+        //set class/id/onclick
+        deleteButton.id= item.id+"dd"
+        deleteButton.addEventListener("click",function (){deleteDish(this)})
+        updateButton.id = item.id+"d"
+        updateButton.addEventListener("click",function (){updateForm(this)})
+        updateButton.type="submit"
+        content2.className="content"
+        content1.className="content"
+        face2.className="face face2"
+        face1.className="face face1"
+        card.className="card"
+
+        //set innerHTML
+        name.innerHTML ="Name: "+item.name
+        category.innerHTML="Category: "+item.category
+        time.innerHTML="Time: "+item.time
+        description.innerHTML="Description: "+item.description
+        updateButton.innerHTML="Modify"
+        deleteButton.innerHTML="Delete"
+        ingredientButton.innerHTML = "View ingredient list"
+
+        //build up
+        content1.append(name,category,time);
+        face1.append(content1);
+        content2.append(description,deleteButton,updateButton,ingredientButton)
+        face2.append(content2)
+        card.append(face1,face2)
+        cardDisplay.append(card)
     }
 
 }
