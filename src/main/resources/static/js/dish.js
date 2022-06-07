@@ -208,6 +208,7 @@ function generateDishHTML(responseJson){
         const deleteButton =document.createElement("a")
         const updateButton =document.createElement("a")
         const ingredientButton =document.createElement("a")
+        const reviewButton =document.createElement("a")
         const content2 = document.createElement("div")
         const face2 = document.createElement("div")
 
@@ -231,11 +232,12 @@ function generateDishHTML(responseJson){
         updateButton.innerHTML="Modify"
         deleteButton.innerHTML="Delete"
         ingredientButton.innerHTML = "View ingredient list"
+        reviewButton.innerHTML = "Review"
 
         //build up
         content1.append(name,category,time);
         face1.append(content1);
-        content2.append(description,deleteButton,updateButton,ingredientButton)
+        content2.append(description,deleteButton,updateButton,reviewButton,ingredientButton)
         face2.append(content2)
         card.append(face1,face2)
         cardDisplay.append(card)
