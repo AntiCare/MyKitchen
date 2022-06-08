@@ -41,12 +41,12 @@
   <form class="form form-popup" id="myrForm">
     <div class="subtitle">Review</div>
     <div class="input-container ic1">
-      <input id="score" name="score" class="input" type="number" placeholder=" " />
+      <input id="score" name="score" class="input" type="number" placeholder=" " oninput="if(value<1)value=1" required/>
       <div class="cut"></div>
       <label for="score" class="placeholder">Score</label>
     </div>
     <div class="input-container ic2">
-      <input id="description" class="input" name="description" type="text" placeholder=" " />
+      <input id="description" class="input" name="description" type="text" placeholder=" " required/>
       <div class="cut"></div>
       <label for="description" class="placeholder">Description</label>
     </div>

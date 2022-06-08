@@ -61,22 +61,22 @@
 <form class="form form-popup" id="myfForm">
     <div class="subtitle">pei liao</div>
     <div class="input-container ic1">
-        <input id="name" name="name" class="input" type="text" placeholder=" " />
+        <input id="name" name="name" class="input" type="text" placeholder=" " required/>
         <div class="cut"></div>
         <label for="name" class="placeholder">Name</label>
     </div>
     <div class="input-container ic2">
-        <input id="category" name="category" class="input" type="text" placeholder=" " />
+        <input id="category" name="category" class="input" type="text" placeholder=" " required/>
         <div class="cut"></div>
         <label for="category" class="placeholder">cate</label>
     </div>
     <div class="input-container ic2">
-        <input id="time" class="input" name="time" type="number" placeholder=" " />
+        <input id="time" class="input" name="time" type="number" oninput="if(value<1)value=1" placeholder=" " required/>
         <div class="cut"></div>
         <label for="time" class="placeholder">time</label>
     </div>
     <div class="input-container ic2">
-        <input id="description" name="description" class="input" type="text" placeholder=" " />
+        <input id="description" name="description" class="input" type="text" placeholder=" " required/>
         <div class="cut cut-short"></div>
         <label for="description" class="placeholder">des</label>
     </div>

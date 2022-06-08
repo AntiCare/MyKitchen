@@ -55,17 +55,17 @@
     <form class="form form-popup" id="myiForm">
         <div class="subtitle">pei liao</div>
         <div class="input-container ic1">
-            <input id="name" name="name" class="input" type="text" placeholder=" " />
+            <input id="name" name="name" class="input" type="text" placeholder=" " required/>
             <div class="cut"></div>
             <label for="name" class="placeholder">Name</label>
         </div>
         <div class="input-container ic2">
-            <input id="weight" class="input" name="weight" type="number" placeholder=" " />
+            <input id="weight" class="input" name="weight" type="number" placeholder=" " oninput="if(value<1)value=1" required  />
             <div class="cut"></div>
             <label for="weight" class="placeholder">weight</label>
         </div>
         <div class="input-container ic2">
-            <input id="description" name="description" class="input" type="text" placeholder=" " />
+            <input id="description" name="description" class="input" type="text" placeholder=" " required/>
             <div class="cut cut-short"></div>
             <label for="description" class="placeholder">des</label>
         </div>
