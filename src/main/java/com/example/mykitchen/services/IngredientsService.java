@@ -1,6 +1,5 @@
 package com.example.mykitchen.services;
 
-import com.example.mykitchen.model.Dish;
 import com.example.mykitchen.model.Ingredient;
 import com.example.mykitchen.repositories.IngredientRepository;
 import org.springframework.stereotype.Service;
@@ -18,6 +17,11 @@ public class IngredientsService {
     public IngredientsService(IngredientRepository ir){
         this.ir = ir;
     }
+    /**
+     * Check if ingredient exist by id
+     * @param id ingredient id
+     * @return bool
+     */
     public boolean ingredientExists(Long id) {
         List<Ingredient> ingredients = ir.findAll();
         if (id != null) {
@@ -32,14 +36,19 @@ public class IngredientsService {
 
 
     /**
-     * get
+     * GET - get all ingredients
+     * @return List<Ingredient>
      */
     public List<Ingredient> getAllIngredients(){
         return  ir.findAll();
     }
 
 
-
+    /**
+     * GET - find ingredient by id
+     * @param id ingredient id
+     * @return Optional<Ingredient>
+     */
     public Optional<Ingredient> getOneIngredientById(Long id){
         return ir.findById(id);
     }
@@ -55,13 +64,17 @@ public class IngredientsService {
         }
         return null;
     }
-
-    public List<Ingredient> SearchIngredientByNameWeight(String name, int weight){
+    /**
+     * GET - search ingredient by name
+     * @param name ingredient name
+     * @return List<Ingredient> or null
+     */
+    public List<Ingredient> SearchIngredientByNameWeight(String name){
         List<Ingredient> ingredients = ir.findAll();
         if (name != null) {
             List<Ingredient> searchIngredientName = new ArrayList<>();
             for (Ingredient i:ingredients) {
-                if(i.name.toLowerCase().contains(name.toLowerCase()) && i.weight>weight){
+                if(i.name.toLowerCase().contains(name.toLowerCase())){
                     searchIngredientName.add(i);
                 }
             }
@@ -71,17 +84,26 @@ public class IngredientsService {
     }
 
     /**
-     * add
+     * POST - add new ingredient.
+     * @param i new ingredient
+     * @return HTTP status 201 or 500
      */
-
-    public Ingredient saveIngredient(Ingredient i){
-        return ir.save(i);
+    public Object saveIngredient(Ingredient i){
+        try {
+            ir.save(i);
+            return HttpServletResponse.SC_CREATED;
+        }catch (Exception e){
+            return HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+        }
     }
 
     /**
-     * modify
+     * PUT - modify ingredient by id
+     * @param id ingredient id
+     * @param i new ingredient
+     * @return HTTP status 201 or 500
      */
-    public Ingredient updateIngredient(Long id, Ingredient i){
+    public Object updateIngredient(Long id, Ingredient i){
         List<Ingredient> ingredients = ir.findAll();
         if (id != null && i !=null) {
             for (Ingredient in:ingredients) {
@@ -90,16 +112,17 @@ public class IngredientsService {
                    in.setWeight(i.getWeight());
                    in.setDescription(i.getDescription());
                    ir.save(in);
-                   return in;
+                    return HttpServletResponse.SC_CREATED;
                 }
             }
         }
-
-        return null;
+        return HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
     }
 
     /**
-     *Delete
+     * DELETE - delete ingredient by id.
+     * @param id ingredient id
+     * @return HTTP status 200 or 500
      */
     public Object deleteIngredientById(Long id){
         try {
@@ -110,6 +133,9 @@ public class IngredientsService {
         return  HttpServletResponse.SC_OK;
     }
 
+    /**
+     * DELETE - delete all ingredients
+     */
     public void deleteAll(){
         ir.deleteAll();
     }

@@ -1,11 +1,11 @@
 package com.example.mykitchen.services;
 
 import com.example.mykitchen.model.Dish;
-import com.example.mykitchen.model.Ingredient;
 import com.example.mykitchen.repositories.DishRepository;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
+import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -18,6 +18,12 @@ public class DishService {
     public DishService(DishRepository dishRepository){
         this.dishRepository = dishRepository;
     }
+
+    /**
+     * Check if dish exist by id
+     * @param id dish id
+     * @return bool
+     */
     public boolean dishExists(Long id) {
         List<Dish> dishes = dishRepository.findAll();
         if (id != null) {
@@ -30,16 +36,20 @@ public class DishService {
         return false;
     }
 
-
     /**
-     * get
+     * GET - get all dishes
+     * @return List<Dish>
      */
     public List<Dish> getAllDishes(){
         return dishRepository.findAll();
     }
 
 
-
+    /**
+     * GET - find dish by id
+     * @param id dish id
+     * @return Optional<Dish>
+     */
     public Optional<Dish> getOneFoodById(Long id){
         return dishRepository.findById(id);
     }
@@ -56,12 +66,17 @@ public class DishService {
         return null;
     }
 
-    public List<Dish> SearchDishByNameTime(String name, int time){
+    /**
+     * GET - search dishes by name
+     * @param name dish name
+     * @return List<Dish> or null
+     */
+    public List<Dish> SearchDishByNameTime(String name){
         List<Dish> dishes = dishRepository.findAll();
         if (name != null) {
             List<Dish> searchDishName = new ArrayList<>();
             for (Dish f: dishes) {
-                if(f.name.toLowerCase().contains(name.toLowerCase()) && f.time>time){
+                if(f.name.toLowerCase().contains(name.toLowerCase()) ){
                     searchDishName.add(f);
                 }
             }
@@ -70,18 +85,30 @@ public class DishService {
       return null;
     }
 
+
     /**
-     * add
+     * POST - add new dish.
+     * @param f new dish
+     * @return HTTP status 201 or 500
      */
 
-    public Dish saveDish(Dish f){
-        return dishRepository.save(f);
+    public Object saveDish(Dish f){
+        try {
+            dishRepository.save(f);
+            return HttpServletResponse.SC_CREATED;
+        }catch (Exception e){
+            return HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+        }
+
     }
 
     /**
-     * modify
+     * PUT - modify dish by id
+     * @param id dish id
+     * @param i new dish
+     * @return HTTP status 201 or 500
      */
-    public Dish updateDish(Long id, Dish i){
+    public Object updateDish(Long id, Dish i){
         List<Dish> dishes = dishRepository.findAll();
         if (id != null && i !=null) {
             for (Dish dish:dishes) {
@@ -91,16 +118,18 @@ public class DishService {
                     dish.setTime(i.getTime());
                     dish.setDescription(i.getDescription());
                     dishRepository.save(dish);
-                    return dish;
+                    return HttpServletResponse.SC_CREATED;
                 }
             }
         }
 
-        return null;
+        return HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
     }
 
     /**
-     *Delete
+     * DELETE - delete dish by id.
+     * @param id dish id
+     * @return HTTP status 200 or 500
      */
     public Object deleteDishById(Long id){
         try {
@@ -111,6 +140,9 @@ public class DishService {
         return  HttpServletResponse.SC_OK;
     }
 
+    /**
+     * DELETE - delete all dishes
+     */
     public void deleteAll(){
        dishRepository.deleteAll();
     }

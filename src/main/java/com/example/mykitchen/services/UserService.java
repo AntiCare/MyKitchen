@@ -15,6 +15,13 @@ public class UserService {
     public UserService(UserRepository userRepository){
         this.userRepository = userRepository;
     }
+
+    /**
+     * Login, check login information
+     * @param username username
+     * @param password password
+     * @return HTTP status 200 or 404
+     */
     public Object login(String username, String password){
         List<UserLogin> users = userRepository.findAll();
         if (username != null && password!= null) {
@@ -27,6 +34,11 @@ public class UserService {
         return HttpServletResponse.SC_NOT_FOUND;
     }
 
+    /**
+     * Register, add user to database.
+     * @param u user data
+     * @return HTTP status 200 or 500
+     */
     public Object saveUser(UserLogin u){
         try {
             userRepository.save(u);

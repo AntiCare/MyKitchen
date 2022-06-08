@@ -1,6 +1,6 @@
 package com.example.mykitchen.services;
 
-import com.example.mykitchen.model.Dish;
+import com.example.mykitchen.model.Ingredient;
 import com.example.mykitchen.model.Review;
 import com.example.mykitchen.repositories.DishRepository;
 import com.example.mykitchen.repositories.ReviewRepository;
@@ -19,6 +19,11 @@ public class ReviewService {
         this.reviewRepository=reviewRepository;
     }
 
+    /**
+     * Check if review exist by id
+     * @param id review id
+     * @return bool
+     */
     public boolean reviewExists(Long id) {
         List<Review> reviews = reviewRepository.findAll();
         if (id != null) {
@@ -33,16 +38,27 @@ public class ReviewService {
 
 
     /**
-     * get
+     * GET - get all reviews
+     * @return List<Review>
      */
     public List<Review> getAllReviews(){
         return reviewRepository.findAll();
     }
 
+    /**
+     * GET - find review by id
+     * @param id review id
+     * @return Optional<Review>
+     */
     public Optional<Review> getOneReviewById(Long id){
         return reviewRepository.findById(id);
     }
 
+    /**
+     * GET - search review by score
+     * @param score review score
+     * @return List<Review>
+     */
     public List<Review> SearchReviewByScore(int score){
         List<Review> reviews = reviewRepository.findAll();
             List<Review> searchReviewScore = new ArrayList<>();
@@ -51,21 +67,31 @@ public class ReviewService {
                     searchReviewScore.add(r);
                 }
             }
-            return searchReviewScore;
+                return searchReviewScore;
     }
 
     /**
-     * add
+     * POST - add new review.
+     * @param r new review
+     * @return HTTP status 201 or 500
      */
+    public Object saveReview(Review r){
+        try{
+            reviewRepository.save(r);
+            return HttpServletResponse.SC_CREATED;
+        }catch (Exception e){
+            return HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+        }
 
-    public Review saveReview(Review r){
-        return reviewRepository.save(r);
     }
 
     /**
-     * modify
+     * PUT - modify review by id
+     * @param id ingredient id
+     * @param i new review
+     * @return HTTP status 201 or 500
      */
-    public Review updateReview(Long id, Review i){
+    public Object updateReview(Long id, Review i){
         List<Review> reviews = reviewRepository.findAll();
         if (id != null && i !=null) {
             for (Review review:reviews) {
@@ -73,15 +99,17 @@ public class ReviewService {
                     review.setScore(i.getScore());
                     review.setDescription(i.getDescription());
                     reviewRepository.save(review);
-                    return review;
+                    return HttpServletResponse.SC_CREATED;
                 }
             }
         }
-        return null;
+        return HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
     }
 
     /**
-     *Delete
+     * DELETE - delete review by id.
+     * @param id review id
+     * @return HTTP status 200 or 500
      */
     public Object deleteReviewById(Long id){
         try {
@@ -91,7 +119,9 @@ public class ReviewService {
         }
         return  HttpServletResponse.SC_OK;
     }
-
+    /**
+     * DELETE - delete all reviews.
+     */
     public void deleteAll(){
         reviewRepository.deleteAll();
     }

@@ -37,7 +37,7 @@ async function getDish(){
         console.log("Get Dishes Json: "+responseJson)
         generateDishHTML(responseJson)
     }catch (e) {
-        alert("Dish get error!: "+e)
+        alert("HTTP status: 400. Get dish. Something went wrong : "+e)
     }
 }
 
@@ -54,14 +54,18 @@ async function addFood(dish){
                 'Content-Type': 'Application/json'
             },
             body: JSON.stringify(dish)
-        });
-
-        await response.json();
-        location.reload();
-        document.getElementById("myfForm").style.display = "none";
+        }).then(res=>res.json())
+            .then(data=>{
+                if(data.toString()==="500"){
+                    alert("HTTP status: 500. Add dish error!");
+                }else if(data.toString()==="201"){
+                    location.reload();
+                    document.getElementById("myfForm").style.display = "none";
+                }
+            })
     }catch (e){
         console.error(e);
-        alert("Something went wrong!")
+        alert("HTTP status: 400. Add dish. Something went wrong : "+e)
     }
 
 }
@@ -76,14 +80,18 @@ async function updateFood(dish,name){
                 'Content-Type': 'Application/json'
             },
             body: JSON.stringify(dish)
-        });
-
-        await response.json();
-        location.reload();
-        document.getElementById("myfForm").style.display = "none";
+        }).then(res=>res.json())
+            .then(data=>{
+                if(data.toString()==="500"){
+                    alert("HTTP status: 500. Modify dish error!");
+                }else if(data.toString()==="201"){
+                    location.reload();
+                    document.getElementById("myfForm").style.display = "none";
+                }
+            })
     }catch (e){
         console.error(e);
-        alert("Something went wrong!")
+        alert("HTTP status: 400. Modify dish. Something went wrong : "+e)
     }
 }
 
@@ -97,15 +105,14 @@ async function deleteFood(id){
         }).then(res=>res.json())
             .then(data=>{
                 if(data.toString()==="500"){
-                    alert("delete fail!");
+                    alert("HTTP status: 500. Delete dish error!");
                 }else if(data.toString()==="200"){
-                    alert("delete ok!");
                     location.reload();
                 }
             })
     }catch (e){
         console.error(e);
-        alert("Something went wrong!")
+        alert("HTTP status: 400. Delete dish. Something went wrong : "+e)
     }
 
 }
@@ -187,7 +194,7 @@ async function searchFunction(searchBody){
             })
     }catch (e){
         console.error(e);
-        alert("Something went wrong!")
+        alert("HTTP status: 400. Search dish. Something went wrong : "+e)
     }
 
 }

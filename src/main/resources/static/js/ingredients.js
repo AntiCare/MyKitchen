@@ -45,7 +45,7 @@ async function getIngredients(){
         console.log("Get Ingredients Json: "+responseJson)
         generateIngredientHTML(responseJson)
     }catch (e) {
-        alert("Ingredient get error!: "+e)
+        alert("HTTP status: 400. Get ingredients error: "+e)
     }
 }
 
@@ -69,7 +69,7 @@ async function deleteIng(id){
             })
     }catch (e){
         console.error(e);
-        alert("Something went wrong!")
+        alert("HTTP status: 400. Delete ingredient error: "+e)
     }
 
 }
@@ -84,14 +84,18 @@ async function addIngredient(ingredient){
                 'Content-Type': 'Application/json'
             },
             body: JSON.stringify(ingredient)
-        });
-
-        await response.json();
-        location.reload();
-        document.getElementById("myiForm").style.display = "none";
+        }).then(res=>res.json())
+            .then(data=>{
+                if(data.toString()==="500"){
+                    alert("HTTP status: 500. Add ingredient error!");
+                }else if(data.toString()==="201"){
+                    location.reload();
+                    document.getElementById("myiForm").style.display = "none";
+                }
+            })
     }catch (e){
         console.error(e);
-        alert("Something went wrong!")
+        alert("HTTP status: 400. Add ingredient error: "+e)
     }
 }
 
@@ -106,14 +110,18 @@ async function updateIngredient(ingredient,name){
                 'Content-Type': 'Application/json'
             },
             body: JSON.stringify(ingredient)
-        });
-
-        await response.json();
-        location.reload();
-        document.getElementById("myiForm").style.display = "none";
+        }).then(res=>res.json())
+            .then(data=>{
+                if(data.toString()==="500"){
+                    alert("HTTP status: 500. Modify dish error!");
+                }else if(data.toString()==="201"){
+                    location.reload();
+                    document.getElementById("myiForm").style.display = "none";
+                }
+            })
     }catch (e){
         console.error(e);
-        alert("Something went wrong!")
+        alert("HTTP status: 400. Modify ingredient error: "+e)
     }
 }
 
@@ -186,7 +194,7 @@ async function searchFunction(searchBody){
             })
     }catch (e){
         console.error(e);
-        alert("Something went wrong!")
+        alert("HTTP status: 400. search ingredient error: "+e)
     }
 
 }

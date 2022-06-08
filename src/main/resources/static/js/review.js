@@ -36,7 +36,7 @@ async function getReview(){
         console.log("Get reviews Json: "+responseJson)
         generateReviewHTML(responseJson)
     }catch (e) {
-        alert("Review get error!: "+e)
+        alert("HTTP status: 400. Get review error: "+e)
     }
 }
 
@@ -53,14 +53,18 @@ async function addReview(review){
                 'Content-Type': 'Application/json'
             },
             body: JSON.stringify(review)
-        });
-
-        await response.json();
-        location.reload();
-        document.getElementById("myrForm").style.display = "none";
+        }).then(res=>res.json())
+            .then(data=>{
+                if(data.toString()==="500"){
+                    alert("HTTP status: 500. Add dish error!");
+                }else if(data.toString()==="201"){
+                    location.reload();
+                    document.getElementById("myrForm").style.display = "none";
+                }
+            })
     }catch (e){
         console.error(e);
-        alert("Something went wrong!")
+        alert("HTTP status: 400. Add review error: "+e)
     }
 
 }
@@ -76,14 +80,18 @@ async function updateReview(review,name){
                 'Content-Type': 'Application/json'
             },
             body: JSON.stringify(review)
-        });
-
-        await response.json();
-        location.reload();
-        document.getElementById("myrForm").style.display = "none";
+        }).then(res=>res.json())
+            .then(data=>{
+                if(data.toString()==="500"){
+                    alert("HTTP status: 500. Modify dish error!");
+                }else if(data.toString()==="201"){
+                    location.reload();
+                    document.getElementById("myrForm").style.display = "none";
+                }
+            })
     }catch (e){
         console.error(e);
-        alert("Something went wrong!")
+        alert("HTTP status: 400. Modify review error: "+e)
     }
 }
 /**
@@ -104,7 +112,7 @@ async function deleteReview(id){
             })
     }catch (e){
         console.error(e);
-        alert("Something went wrong!")
+        alert("HTTP status: 400. Delete review error: "+e)
     }
 
 }
@@ -178,7 +186,7 @@ async function searchFunction(searchBody){
             })
     }catch (e){
         console.error(e);
-        alert("Something went wrong!")
+        alert("HTTP status: 400. Search review error: "+e)
     }
 
 }
