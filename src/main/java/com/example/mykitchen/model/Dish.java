@@ -1,10 +1,13 @@
 package com.example.mykitchen.model;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+
+import javax.persistence.*;
+import java.util.List;
+
+
 @Entity
 public class Dish {
     @Id
@@ -16,6 +19,13 @@ public class Dish {
 
     public String description;
 
+    @OneToMany(mappedBy = "dish", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    public List<Review> reviewList;
+
+    @OneToMany(mappedBy = "dish", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    public List<Ingredient> ingredientList;
     public Long getId() {
         return id;
     }
@@ -52,6 +62,22 @@ public class Dish {
         this.description = description;
     }
 
+    public List<Review> getReviewList() {
+        return reviewList;
+    }
+
+    public void setReviewList(List<Review> reviewList) {
+        this.reviewList = reviewList;
+    }
+
+    public List<Ingredient> getIngredientList() {
+        return ingredientList;
+    }
+
+    public void setIngredientList(List<Ingredient> ingredientList) {
+        this.ingredientList = ingredientList;
+    }
+
     @Override
     public String toString() {
         return "Dish{" +
@@ -60,6 +86,8 @@ public class Dish {
                 ", category='" + category + '\'' +
                 ", time=" + time +
                 ", description='" + description + '\'' +
+                ", reviewList=" + reviewList +
+                ", ingredientList=" + ingredientList +
                 '}';
     }
 }

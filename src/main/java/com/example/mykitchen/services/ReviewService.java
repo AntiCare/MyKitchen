@@ -1,6 +1,6 @@
 package com.example.mykitchen.services;
 
-import com.example.mykitchen.model.Ingredient;
+import com.example.mykitchen.model.Dish;
 import com.example.mykitchen.model.Review;
 import com.example.mykitchen.repositories.DishRepository;
 import com.example.mykitchen.repositories.ReviewRepository;
@@ -50,8 +50,13 @@ public class ReviewService {
      * @param id review id
      * @return Optional<Review>
      */
-    public Optional<Review> getOneReviewById(Long id){
-        return reviewRepository.findById(id);
+    public Optional<Review> getOneReviewById(List<Review> reviews, Long id){
+        for (Review r:reviews) {
+            if(Objects.equals(r.getId(), id)){
+                return reviewRepository.findById(id);
+            }
+        }
+        return  null;
     }
 
     /**
@@ -59,8 +64,7 @@ public class ReviewService {
      * @param score review score
      * @return List<Review>
      */
-    public List<Review> SearchReviewByScore(int score){
-        List<Review> reviews = reviewRepository.findAll();
+    public List<Review> SearchReviewByScore(List<Review> reviews,int score){
             List<Review> searchReviewScore = new ArrayList<>();
             for (Review r: reviews) {
                 if(r.score==score){
@@ -70,14 +74,18 @@ public class ReviewService {
                 return searchReviewScore;
     }
 
+
+
     /**
      * POST - add new review.
-     * @param r new review
+     * @param dish dish
+     * @param review new review
      * @return HTTP status 201 or 500
      */
-    public Object saveReview(Review r){
+    public Object addReviewToDish(Dish dish, Review review){
         try{
-            reviewRepository.save(r);
+            review.setDish(dish);
+             reviewRepository.save(review);
             return HttpServletResponse.SC_CREATED;
         }catch (Exception e){
             return HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
@@ -85,14 +93,14 @@ public class ReviewService {
 
     }
 
+
     /**
      * PUT - modify review by id
      * @param id ingredient id
      * @param i new review
      * @return HTTP status 201 or 500
      */
-    public Object updateReview(Long id, Review i){
-        List<Review> reviews = reviewRepository.findAll();
+    public Object updateReview(List<Review> reviews,Long id, Review i){
         if (id != null && i !=null) {
             for (Review review:reviews) {
                 if(Objects.equals(review.getId(), id)){
@@ -108,22 +116,33 @@ public class ReviewService {
 
     /**
      * DELETE - delete review by id.
-     * @param id review id
      * @return HTTP status 200 or 500
      */
-    public Object deleteReviewById(Long id){
+    public Object deleteReviewById(Long id,Long rid){
         try {
-            reviewRepository.deleteById(id);
+            List<Review> reviews = reviewRepository.findAll();
+            for (Review r:reviews) {
+                if(Objects.equals(r.getDish().getId(), id) && Objects.equals(r.getId(), rid)){
+                  reviewRepository.deleteById(rid);
+                  return  HttpServletResponse.SC_OK;
+                }
+            }
         }catch (Exception e){
             return  HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
         }
-        return  HttpServletResponse.SC_OK;
+        return null;
     }
     /**
      * DELETE - delete all reviews.
      */
-    public void deleteAll(){
-        reviewRepository.deleteAll();
+    public void deleteAllReviews(Long id){
+        List<Review> reviews = reviewRepository.findAll();
+        for (Review r:reviews) {
+            if(Objects.equals(r.getDish().getId(), id)){
+                reviewRepository.deleteById(r.getId());
+            }
+        }
+
     }
 
 }

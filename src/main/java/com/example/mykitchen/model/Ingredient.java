@@ -1,15 +1,19 @@
 package com.example.mykitchen.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import javax.persistence.*;
 
 @Entity
 public class Ingredient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "dish_id", nullable = false)
+    @JsonBackReference
+    private Dish dish;
     public String name;
     public int weight;
     public String description;
@@ -42,10 +46,19 @@ public class Ingredient {
         this.description = description;
     }
 
+    public Dish getDish() {
+        return dish;
+    }
+
+    public void setDish(Dish dish) {
+        this.dish = dish;
+    }
+
     @Override
     public String toString() {
         return "Ingredient{" +
                 "id=" + id +
+                ", dish=" + dish +
                 ", name='" + name + '\'' +
                 ", weight=" + weight +
                 ", description='" + description + '\'' +

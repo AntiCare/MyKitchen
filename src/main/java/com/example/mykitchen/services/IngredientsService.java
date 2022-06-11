@@ -1,6 +1,8 @@
 package com.example.mykitchen.services;
 
+import com.example.mykitchen.model.Dish;
 import com.example.mykitchen.model.Ingredient;
+import com.example.mykitchen.model.Review;
 import com.example.mykitchen.repositories.IngredientRepository;
 import org.springframework.stereotype.Service;
 
@@ -36,41 +38,26 @@ public class IngredientsService {
 
 
     /**
-     * GET - get all ingredients
-     * @return List<Ingredient>
-     */
-    public List<Ingredient> getAllIngredients(){
-        return  ir.findAll();
-    }
-
-
-    /**
      * GET - find ingredient by id
      * @param id ingredient id
      * @return Optional<Ingredient>
      */
-    public Optional<Ingredient> getOneIngredientById(Long id){
-        return ir.findById(id);
-    }
-
-    public Ingredient getIngredientByName(String name){
-        List<Ingredient> ingredients = ir.findAll();
-        if (name != null) {
-            for (Ingredient i: ingredients) {
-                if(i.getName().equalsIgnoreCase(name)){
-                    return i;
-                }
+    public Optional<Ingredient> getOneIngredientById(List<Ingredient> ingredients, Long id){
+        for (Ingredient i:ingredients) {
+            if(Objects.equals(i.getId(),id)){
+                return ir.findById(id);
             }
         }
         return null;
     }
+
+
     /**
      * GET - search ingredient by name
      * @param name ingredient name
      * @return List<Ingredient> or null
      */
-    public List<Ingredient> SearchIngredientByNameWeight(String name){
-        List<Ingredient> ingredients = ir.findAll();
+    public List<Ingredient> SearchIngredientByName(List<Ingredient> ingredients, String name){
         if (name != null) {
             List<Ingredient> searchIngredientName = new ArrayList<>();
             for (Ingredient i:ingredients) {
@@ -83,18 +70,22 @@ public class IngredientsService {
         return null;
     }
 
+
     /**
      * POST - add new ingredient.
-     * @param i new ingredient
+     * @param dish dish
+     * @param ingredient new review
      * @return HTTP status 201 or 500
      */
-    public Object saveIngredient(Ingredient i){
-        try {
-            ir.save(i);
+    public Object addIngredientToDish(Dish dish, Ingredient ingredient){
+        try{
+            ingredient.setDish(dish);
+            ir.save(ingredient);
             return HttpServletResponse.SC_CREATED;
         }catch (Exception e){
             return HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
         }
+
     }
 
     /**
@@ -103,8 +94,8 @@ public class IngredientsService {
      * @param i new ingredient
      * @return HTTP status 201 or 500
      */
-    public Object updateIngredient(Long id, Ingredient i){
-        List<Ingredient> ingredients = ir.findAll();
+    //TODO change error to 404
+    public Object updateIngredient(List<Ingredient> ingredients, Long id, Ingredient i){
         if (id != null && i !=null) {
             for (Ingredient in:ingredients) {
                 if(Objects.equals(in.getId(), id)){
@@ -119,36 +110,38 @@ public class IngredientsService {
         return HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
     }
 
+
     /**
-     * DELETE - delete ingredient by id.
-     * @param id ingredient id
-     * @return HTTP status 200 or 500
+     * DELETE - delete review by id.
+     * @param id dish id
+     * @param iid ingredient id
+     * @return  HTTP status 200 or 500
      */
-    public Object deleteIngredientById(Long id){
+    public Object deleteIngredientById(Long id,Long iid){
         try {
-            ir.deleteById(id);
+            List<Ingredient> ingredients = ir.findAll();
+            for (Ingredient i:ingredients) {
+                if(Objects.equals(i.getDish().getId(), id) && Objects.equals(i.getId(), iid)){
+                    ir.deleteById(iid);
+                    return  HttpServletResponse.SC_OK;
+                }
+            }
         }catch (Exception e){
             return  HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
         }
-        return  HttpServletResponse.SC_OK;
+        return null;
     }
-
     /**
-     * DELETE - delete all ingredients
+     * DELETE - delete all ingredients.
      */
-    public void deleteAll(){
-        ir.deleteAll();
-    }
-
-    public void deleteIngredientByName(String name){
+    public void deleteAllIngredients(Long id){
         List<Ingredient> ingredients = ir.findAll();
-        if (name != null) {
-            for (Ingredient i:ingredients) {
-                if(i.getName().equalsIgnoreCase(name)){
-                    ir.deleteById(i.getId());
-                }
+        for (Ingredient i:ingredients) {
+            if(Objects.equals(i.getDish().getId(), id)){
+                ir.deleteById(i.getId());
             }
         }
+
     }
 
 
