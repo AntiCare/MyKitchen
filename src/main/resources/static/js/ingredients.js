@@ -1,6 +1,25 @@
 let update = false;
 let name ="";
 const cardDisplay = document.getElementById("product-container")
+const dishId = getDishId();
+
+/**
+ * get dish id from URL
+ */
+
+function getDishId()
+{
+    const query = window.location.search.substring(1);
+    const vars = query.split("&");
+    for (let i=0; i<vars.length; i++) {
+        const pair = vars[i].split("=");
+        if(pair[0] == "dishId"){
+            return pair[1];
+        }
+    }
+    return false;
+}
+
 /**
  * submit form for PUT & POST
  */
@@ -39,7 +58,8 @@ async function deleteIngredient(event){
 
 async function getIngredients(){
     try{
-        const response = await fetch('http://localhost:8080/ingredients');
+        const response = await fetch('http://localhost:8080/dishes/'+dishId+'/ingredients');
+        // "http://localhost:8080/dishes/"+dishId+"/ingredients"
         console.log("Get Ingredients: "+response);
         const responseJson = await response.json();
         console.log("Get Ingredients Json: "+responseJson)
@@ -56,7 +76,7 @@ getIngredients();
  */
 async function deleteIng(id){
     try{
-        const response = await fetch('http://localhost:8080/ingredients/'+id,{
+        const response = await fetch('http://localhost:8080/dishes/'+dishId+'/ingredients/'+id,{
             method: "DELETE"
         }).then(res=>res.json())
             .then(data=>{
@@ -78,7 +98,7 @@ async function deleteIng(id){
  */
 async function addIngredient(ingredient){
     try{
-        const response = await fetch('http://localhost:8080/ingredients',{
+        const response = await fetch('http://localhost:8080/dishes/'+dishId+'/ingredients',{
             method: "POST",
             headers: {
                 'Content-Type': 'Application/json'
@@ -104,7 +124,8 @@ async function addIngredient(ingredient){
  */
 async function updateIngredient(ingredient,name){
     try{
-        const response = await fetch('http://localhost:8080/ingredients/'+name,{
+        const response = await fetch('http://localhost:8080/dishes/'+dishId+'/ingredients/'+name,{
+
             method: "PUT",
             headers: {
                 'Content-Type': 'Application/json'
@@ -112,8 +133,8 @@ async function updateIngredient(ingredient,name){
             body: JSON.stringify(ingredient)
         }).then(res=>res.json())
             .then(data=>{
-                if(data.toString()==="500"){
-                    alert("HTTP status: 500. Modify dish error!");
+                if(data.toString()==="404"){
+                    alert("HTTP status: 404. Modify dish error!");
                 }else if(data.toString()==="201"){
                     location.reload();
                     document.getElementById("myiForm").style.display = "none";
@@ -182,7 +203,7 @@ document.getElementById("searchBar").addEventListener("submit",async function(ev
  */
 async function searchFunction(searchBody){
     try{
-        const response = await fetch('http://localhost:8080/ingredients/search?'+searchBody,{
+        const response = await fetch('http://localhost:8080/dishes/'+dishId+'/ingredients/search?'+searchBody,{
             method: "GET",
             headers: {
                 'Content-Type': 'Application/json'

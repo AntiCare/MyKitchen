@@ -92,9 +92,8 @@ public class IngredientsService {
      * PUT - modify ingredient by id
      * @param id ingredient id
      * @param i new ingredient
-     * @return HTTP status 201 or 500
+     * @return HTTP status 201 or 404
      */
-    //TODO change error to 404
     public Object updateIngredient(List<Ingredient> ingredients, Long id, Ingredient i){
         if (id != null && i !=null) {
             for (Ingredient in:ingredients) {
@@ -107,7 +106,7 @@ public class IngredientsService {
                 }
             }
         }
-        return HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+        return HttpServletResponse.SC_NOT_FOUND;
     }
 
 

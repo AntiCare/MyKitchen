@@ -78,7 +78,7 @@ public class DishController {
      * PUT -update exist dish
      * @param id  find dish by id
      * @param fo new dish
-     * @return HTTP status 201 or 500.
+     * @return HTTP status 201 or 404.
      */
     @PutMapping("/{id}")
     public Object updateFood(@PathVariable Long id, @RequestBody Dish fo){
@@ -173,7 +173,7 @@ public class DishController {
      * PUT -update exist review.
      * @param id  find review by id
      * @param r new review
-     * @return HTTP status 201 or 500.
+     * @return HTTP status 201 or 404.
      */
     @PutMapping("/{id}/reviews/{rid}")
     public Object updateReview(@PathVariable Long id,@PathVariable Long rid, @RequestBody Review r){
@@ -281,7 +281,7 @@ public class DishController {
      * @param id dish id
      * @param iid ingredient id
      * @param i new ingredient
-     * @return HTTP status 201 or 500.
+     * @return HTTP status 201 or 404.
      */
     @PutMapping("/{id}/ingredients/{iid}")
     public Object updateIngredient(@PathVariable Long id,@PathVariable Long iid, @RequestBody Ingredient i){

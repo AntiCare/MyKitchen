@@ -106,7 +106,7 @@ public class DishService {
      * PUT - modify dish by id
      * @param id dish id
      * @param i new dish
-     * @return HTTP status 201 or 500
+     * @return HTTP status 201 or 404
      */
     public Object updateDish(Long id, Dish i){
         List<Dish> dishes = dishRepository.findAll();
@@ -123,7 +123,7 @@ public class DishService {
             }
         }
 
-        return HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+        return HttpServletResponse.SC_NOT_FOUND;
     }
 
     /**

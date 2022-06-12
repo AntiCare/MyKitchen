@@ -82,8 +82,8 @@ async function updateFood(dish,name){
             body: JSON.stringify(dish)
         }).then(res=>res.json())
             .then(data=>{
-                if(data.toString()==="500"){
-                    alert("HTTP status: 500. Modify dish error!");
+                if(data.toString()==="404"){
+                    alert("HTTP status: 404. Modify dish error!");
                 }else if(data.toString()==="201"){
                     location.reload();
                     document.getElementById("myfForm").style.display = "none";
@@ -130,6 +130,16 @@ function updateForm(event){
     console.log(name)
 }
 
+function jumpToIngredient(event){
+    var id = parseFloat(event.id);
+    const url = "ingredients.html?dishId=" + id;
+    location.href=url;
+}
+
+function jumpToReview(event){
+
+}
+
 function openForm() {
     document.getElementById("myfForm").style.display = "block";
 }
@@ -146,6 +156,8 @@ function closeCancel() {
     document.getElementById("cancelSearch").style.display = "none";
     location.reload();
 }
+
+
 
 /**
  * submit text for search.
@@ -225,6 +237,8 @@ function generateDishHTML(responseJson){
         updateButton.id = item.id+"d"
         updateButton.addEventListener("click",function (){updateForm(this)})
         updateButton.type="submit"
+        ingredientButton.id=item.id+"ddd"
+        ingredientButton.addEventListener("click",function (){jumpToIngredient(this)})
         content2.className="content"
         content1.className="content"
         face2.className="face face2"

@@ -82,8 +82,8 @@ async function updateReview(review,name){
             body: JSON.stringify(review)
         }).then(res=>res.json())
             .then(data=>{
-                if(data.toString()==="500"){
-                    alert("HTTP status: 500. Modify dish error!");
+                if(data.toString()==="404"){
+                    alert("HTTP status: 404. Modify dish error!");
                 }else if(data.toString()==="201"){
                     location.reload();
                     document.getElementById("myrForm").style.display = "none";

@@ -38,14 +38,6 @@ public class ReviewService {
 
 
     /**
-     * GET - get all reviews
-     * @return List<Review>
-     */
-    public List<Review> getAllReviews(){
-        return reviewRepository.findAll();
-    }
-
-    /**
      * GET - find review by id
      * @param id review id
      * @return Optional<Review>
@@ -98,7 +90,7 @@ public class ReviewService {
      * PUT - modify review by id
      * @param id ingredient id
      * @param i new review
-     * @return HTTP status 201 or 500
+     * @return HTTP status 201 or 404
      */
     public Object updateReview(List<Review> reviews,Long id, Review i){
         if (id != null && i !=null) {
@@ -111,7 +103,7 @@ public class ReviewService {
                 }
             }
         }
-        return HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+        return HttpServletResponse.SC_NOT_FOUND;
     }
 
     /**
