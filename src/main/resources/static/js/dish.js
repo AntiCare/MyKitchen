@@ -137,7 +137,9 @@ function jumpToIngredient(event){
 }
 
 function jumpToReview(event){
-
+    var id = parseFloat(event.id);
+    const url = "review.html?dishId=" + id;
+    location.href=url;
 }
 
 function openForm() {
@@ -239,6 +241,8 @@ function generateDishHTML(responseJson){
         updateButton.type="submit"
         ingredientButton.id=item.id+"ddd"
         ingredientButton.addEventListener("click",function (){jumpToIngredient(this)})
+        reviewButton.id=item.id+"dddd"
+        reviewButton.addEventListener("click",function (){jumpToReview(this)})
         content2.className="content"
         content1.className="content"
         face2.className="face face2"

@@ -1,6 +1,24 @@
 let update = false;
 let name ="";
 const cardDisplay = document.getElementById("cards")
+const dishId = getDishId();
+
+/**
+ * get dish id from URL
+ */
+
+function getDishId()
+{
+    const query = window.location.search.substring(1);
+    const vars = query.split("&");
+    for (let i=0; i<vars.length; i++) {
+        const pair = vars[i].split("=");
+        if(pair[0] == "dishId"){
+            return pair[1];
+        }
+    }
+    return false;
+}
 /**
  * submit form for PUT & POST
  */
@@ -30,7 +48,7 @@ document.getElementById("myrForm").addEventListener("submit",async function(even
  */
 async function getReview(){
     try{
-        const response = await fetch('http://localhost:8080/reviews');
+        const response = await fetch('http://localhost:8080/dishes/'+dishId+'/reviews');
         console.log("Get reviews: "+response);
         const responseJson = await response.json();
         console.log("Get reviews Json: "+responseJson)
@@ -47,7 +65,7 @@ getReview();
  */
 async function addReview(review){
     try{
-        const response = await fetch('http://localhost:8080/reviews',{
+        const response = await fetch('http://localhost:8080/dishes/'+dishId+'/reviews',{
             method: "POST",
             headers: {
                 'Content-Type': 'Application/json'
@@ -74,7 +92,7 @@ async function addReview(review){
  */
 async function updateReview(review,name){
     try{
-        const response = await fetch('http://localhost:8080/reviews/'+name,{
+        const response = await fetch('http://localhost:8080/dishes/'+dishId+'/reviews/'+name,{
             method: "PUT",
             headers: {
                 'Content-Type': 'Application/json'
@@ -99,7 +117,7 @@ async function updateReview(review,name){
  */
 async function deleteReview(id){
     try{
-        const response = await fetch('http://localhost:8080/reviews/'+id,{
+        const response = await fetch('http://localhost:8080/dishes/'+dishId+'/reviews/'+id,{
             method: "DELETE"
         }).then(res=>res.json())
             .then(data=>{
@@ -173,7 +191,7 @@ document.getElementById("searchBar").addEventListener("submit",async function(ev
  */
 async function searchFunction(searchBody){
     try{
-        const response = await fetch('http://localhost:8080/reviews/search?'+searchBody,{
+        const response = await fetch('http://localhost:8080/dishes/'+dishId+'/reviews/search?'+searchBody,{
             method: "GET",
             headers: {
                 'Content-Type': 'Application/json'

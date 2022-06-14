@@ -76,9 +76,7 @@ async function Userlogin(formBody){
                 if(data.toString()==="404"){
                     alert("please register!");
                 }else if(data.toString()==="200"){
-                    alert("ok!");
                     self.location="dish.html"
-
                 }
             })
     }catch (e){
@@ -99,9 +97,9 @@ async function UserRegister(user){
         }).then(res=>res.json())
             .then(data=>{
                 if(data.toString()==="500"){
-                    alert("add error");
+                    alert("Register error! please try again.");
                 }else if(data.toString()==="200"){
-                    alert("add ok!");
+                    alert("You have successfully registered!");
                 }
             })
     }catch (e){
