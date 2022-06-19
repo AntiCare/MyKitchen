@@ -29,7 +29,7 @@ public class UserController {
     /**
      * POST -register, add user to database.
      * @param user register user
-     * @return HTTP status 200 or 500
+     * @return HTTP status 201 or 500
      */
     @PostMapping(consumes = {"application/json"})
     public Object registerJson(@RequestBody UserLogin user){

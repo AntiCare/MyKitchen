@@ -37,7 +37,7 @@ public class UserService {
     /**
      * Register, add user to database.
      * @param u user data
-     * @return HTTP status 200 or 500
+     * @return HTTP status 201 or 500
      */
     public Object saveUser(UserLogin u){
         try {
@@ -45,6 +45,6 @@ public class UserService {
         }catch (Exception e){
             return HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
         }
-        return  HttpServletResponse.SC_OK;
+        return  HttpServletResponse.SC_CREATED;
     }
 }

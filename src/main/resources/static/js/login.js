@@ -98,7 +98,7 @@ async function UserRegister(user){
             .then(data=>{
                 if(data.toString()==="500"){
                     alert("Register error! please try again.");
-                }else if(data.toString()==="200"){
+                }else if(data.toString()==="201"){
                     alert("You have successfully registered!");
                 }
             })
