@@ -129,7 +129,7 @@ public class DishService {
     /**
      * DELETE - delete dish by id.
      * @param id dish id
-     * @return HTTP status 200 or 500
+     * @return HTTP status 200 500 404
      */
     public Object deleteDishById(Long id){
         try {

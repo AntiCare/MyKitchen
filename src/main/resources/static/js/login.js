@@ -96,8 +96,8 @@ async function UserRegister(user){
             body: JSON.stringify(user)
         }).then(res=>res.json())
             .then(data=>{
-                if(data.toString()==="500"){
-                    alert("Register error! please try again.");
+                if(data.toString()==="405"){
+                    alert("405 Register error! please try again.");
                 }else if(data.toString()==="201"){
                     alert("You have successfully registered!");
                 }

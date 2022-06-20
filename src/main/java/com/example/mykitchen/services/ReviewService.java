@@ -90,7 +90,7 @@ public class ReviewService {
      * PUT - modify review by id
      * @param id ingredient id
      * @param i new review
-     * @return HTTP status 201 or 404
+     * @return HTTP status 201 400 404
      */
     public Object updateReview(List<Review> reviews,Long id, Review i){
         if (id != null && i !=null) {
@@ -103,12 +103,12 @@ public class ReviewService {
                 }
             }
         }
-        return HttpServletResponse.SC_NOT_FOUND;
+        return HttpServletResponse.SC_BAD_REQUEST;
     }
 
     /**
      * DELETE - delete review by id.
-     * @return HTTP status 200 or 500
+     * @return HTTP status 200 404 500
      */
     public Object deleteReviewById(Long id,Long rid){
         try {

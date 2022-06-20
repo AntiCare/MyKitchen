@@ -100,8 +100,8 @@ async function updateReview(review,name){
             body: JSON.stringify(review)
         }).then(res=>res.json())
             .then(data=>{
-                if(data.toString()==="404"){
-                    alert("HTTP status: 404. Modify dish error!");
+                if(data.toString()==="400"){
+                    alert("HTTP status: 400. Modify dish error! Invalid dish ID supplied");
                 }else if(data.toString()==="201"){
                     location.reload();
                     document.getElementById("myrForm").style.display = "none";
@@ -122,9 +122,9 @@ async function deleteReview(id){
         }).then(res=>res.json())
             .then(data=>{
                 if(data.toString()==="500"){
-                    alert("delete fail!");
+                    alert("500, delete fail!");
                 }else if(data.toString()==="200"){
-                    alert("delete ok!");
+                    alert("delete, ok!");
                     location.reload();
                 }
             })

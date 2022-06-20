@@ -92,7 +92,7 @@ public class IngredientsService {
      * PUT - modify ingredient by id
      * @param id ingredient id
      * @param i new ingredient
-     * @return HTTP status 201 or 404
+     * @return HTTP status 201 400 404
      */
     public Object updateIngredient(List<Ingredient> ingredients, Long id, Ingredient i){
         if (id != null && i !=null) {
@@ -106,7 +106,7 @@ public class IngredientsService {
                 }
             }
         }
-        return HttpServletResponse.SC_NOT_FOUND;
+        return HttpServletResponse.SC_BAD_REQUEST;
     }
 
 
@@ -114,7 +114,7 @@ public class IngredientsService {
      * DELETE - delete review by id.
      * @param id dish id
      * @param iid ingredient id
-     * @return  HTTP status 200 or 500
+     * @return  HTTP status 200 404 500
      */
     public Object deleteIngredientById(Long id,Long iid){
         try {

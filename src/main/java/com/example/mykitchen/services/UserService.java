@@ -37,13 +37,13 @@ public class UserService {
     /**
      * Register, add user to database.
      * @param u user data
-     * @return HTTP status 201 or 500
+     * @return HTTP status 201 or 405
      */
     public Object saveUser(UserLogin u){
         try {
             userRepository.save(u);
         }catch (Exception e){
-            return HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+            return HttpServletResponse.SC_METHOD_NOT_ALLOWED;
         }
         return  HttpServletResponse.SC_CREATED;
     }

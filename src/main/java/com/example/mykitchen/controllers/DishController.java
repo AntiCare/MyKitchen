@@ -96,7 +96,7 @@ public class DishController {
     /**
      * DELETE -delete dish by id.
      * @param id id
-     * @return 1. 404 2. HTTP status 200 or 500.
+     * @return 1. 404 2. HTTP status 200 404 500.
      */
     @DeleteMapping("/{id}")
     public Object delete(@PathVariable Long id){
@@ -173,7 +173,7 @@ public class DishController {
      * PUT -update exist review.
      * @param id  find review by id
      * @param r new review
-     * @return HTTP status 201 or 404.
+     * @return HTTP status 201 400 404.
      */
     @PutMapping("/{id}/reviews/{rid}")
     public Object updateReview(@PathVariable Long id,@PathVariable Long rid, @RequestBody Review r){
@@ -281,7 +281,7 @@ public class DishController {
      * @param id dish id
      * @param iid ingredient id
      * @param i new ingredient
-     * @return HTTP status 201 or 404.
+     * @return HTTP status 201 400 404.
      */
     @PutMapping("/{id}/ingredients/{iid}")
     public Object updateIngredient(@PathVariable Long id,@PathVariable Long iid, @RequestBody Ingredient i){
