@@ -50,14 +50,32 @@ document.getElementById("login-form").addEventListener("submit",async function(e
 
 document.getElementById("register-form").addEventListener("submit",async function(event2){
     event2.preventDefault();
-    let userRegister={};
-    for(const elem of document.querySelectorAll("input[type=text],input[type=password]")){
-        userRegister[elem.name]=elem.value;
+    //form validation using JS.
+    let str = document.forms["registerCheck"]["password"].value;
+    if (str == null || str.length <8) {
+       alert("password need more than 8 characters!")
     }
-        await UserRegister(userRegister)
-    for(const elem of document.querySelectorAll("input[type=text],input[type=password]")){
-        elem.value="";
+    let reg1 = new RegExp(/^[0-9A-Za-z]+$/);
+    if (!reg1.test(str)) {
+        alert("Password can only contain letters and numbers!")
+    }else{
+        let reg = new RegExp(/[A-Za-z].*[0-9]|[0-9].*[A-Za-z]/);
+        if (reg.test(str)) {
+            let userRegister={};
+            for(const elem of document.querySelectorAll("input[type=text],input[type=password]")){
+                userRegister[elem.name]=elem.value;
+            }
+            await UserRegister(userRegister)
+            for(const elem of document.querySelectorAll("input[type=text],input[type=password]")){
+                elem.value="";
+            }
+        }else{
+            alert("Password must contain at least 1 number and 1 letter!")
+        }
     }
+
+
+
 })
 
 
