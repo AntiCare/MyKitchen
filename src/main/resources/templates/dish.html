@@ -25,7 +25,7 @@
 
 <!-- product  -->
 <section class="product">
-    <h2 class="product-category">Pizza</h2>
+    <h2 class="product-category">Dish</h2>
 </section>
     <!-- product 2-->
 
@@ -55,10 +55,10 @@
 
 
 <!-- add-->
-<button class="open-button" onclick="openForm()">Add Food</button>
+<button class="open-button" onclick="openForm()">Add Dish</button>
 
 <form class="form form-popup" id="myfForm">
-    <div class="subtitle">pei liao</div>
+    <div class="subtitle">Dish</div>
     <div class="input-container ic1">
         <input id="name" name="name" class="input" type="text" placeholder=" " required/>
         <div class="cut"></div>
@@ -67,7 +67,7 @@
     <div class="input-container ic2">
         <input id="category" name="category" class="input" type="text" placeholder=" " required/>
         <div class="cut"></div>
-        <label for="category" class="placeholder">cate</label>
+        <label for="category" class="placeholder">category</label>
     </div>
     <div class="input-container ic2">
         <input id="time" class="input" name="time" type="number" oninput="if(value<1)value=1" placeholder=" " required/>
@@ -77,9 +77,9 @@
     <div class="input-container ic2">
         <input id="description" name="description" class="input" type="text" placeholder=" " required/>
         <div class="cut cut-short"></div>
-        <label for="description" class="placeholder">des</label>
+        <label for="description" class="placeholder">description</label>
     </div>
-    <button type="submit" id="submit" class="submit">add</button>
+    <button type="submit" id="submit" class="submit">add/update</button>
     <button type="button" class="submit-close" onclick="closeForm()">Close</button>
 </form>
 
